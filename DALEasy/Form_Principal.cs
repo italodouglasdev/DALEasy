@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace DALEasy
 {
-    public partial class Form1 : Form
+    public partial class Form_Principal : Form
     {
-        public Form1()
+        public Form_Principal()
         {
             InitializeComponent();
         }

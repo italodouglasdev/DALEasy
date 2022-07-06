@@ -46,11 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Banco.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Form_Principal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Form_Principal.Designer.cs">
+      <DependentUpon>Form_Principal.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

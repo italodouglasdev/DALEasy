@@ -1,7 +1,7 @@
 ﻿
 namespace DALEasy
 {
-    partial class Form1
+    partial class Form_Principal
     {
         /// <summary>
         /// Variável de designer necessária.
