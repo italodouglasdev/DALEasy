@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32407.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DALEasy", "DALEasy\DALEasy.csproj", "{BB24BADD-0D13-42FC-A9EC-B323C559A688}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB24BADD-0D13-42FC-A9EC-B323C559A688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB24BADD-0D13-42FC-A9EC-B323C559A688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB24BADD-0D13-42FC-A9EC-B323C559A688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB24BADD-0D13-42FC-A9EC-B323C559A688}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7349E9B7-A7E4-4CE4-996D-8710440B95DD}
+	EndGlobalSection
+EndGlobal
