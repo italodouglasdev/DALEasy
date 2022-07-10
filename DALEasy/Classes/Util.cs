@@ -8,11 +8,15 @@ namespace DALEasy
     {
         public static string RemoverCaracteresEspeciais(string source)
         {
+
+            if (string.IsNullOrEmpty(source))
+                return "";
+
             var encodeEightBit = Encoding.GetEncoding(1251).GetBytes(source);
             var stringSevenBits = Encoding.UTF8.GetString(encodeEightBit);
             var regex = new Regex("[^a-zA-Z0-9]=-_/ºª");
             var retotno = regex.Replace(stringSevenBits, " ");
-            return retotno.Replace(" ", "_").Replace("?","").Replace("º","").Replace("ª","");
+            return retotno.Replace(" ", "_").Replace("?", "").Replace("º", "").Replace("ª", "");
         }
 
 
@@ -21,7 +25,7 @@ namespace DALEasy
         {
             return Convert.ToString(Valor).Replace(".", "").Replace(", ", ".");
         }
-         
+
 
     }
 }

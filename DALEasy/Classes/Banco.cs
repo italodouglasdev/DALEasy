@@ -14,11 +14,12 @@ namespace DALEasy
 
         public string Senha { get; set; }
 
-        public TipoBanco Tipo { get; set; }
+        public string Tipo { get; set; }
 
         public List<Tabela> Tabelas { get; set; }
 
-        public static List<Banco> SelectAll(string Servidor, string Usuario, string Senha)
+
+        public static List<Banco> MsSQLSelectAll(string Servidor, string Usuario, string Senha)
         {
             List<Banco> ListaBancos = new List<Banco>();
             Banco BancoDados = new Banco();
@@ -60,14 +61,15 @@ namespace DALEasy
             }
         }
 
+        //public enum TipoBanco
+        //{
+        //    MsSQL,
+        //    PostgreSQL
+        //}
 
     }
 
 
-    public enum TipoBanco
-    {
-        MsSQL,
-        PostgreSQL
-    }
+
 
 }
