@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DALEasy
+namespace DALEasy.Classes
 {
-    class Banco
+    class Coluna
     {
     }
 }
