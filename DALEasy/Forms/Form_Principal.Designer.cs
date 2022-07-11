@@ -46,11 +46,6 @@ namespace DALEasy
             this.labelColunas = new System.Windows.Forms.Label();
             this.labelTabelas = new System.Windows.Forms.Label();
             this.dataGridViewColunas = new System.Windows.Forms.DataGridView();
-            this.ColumnColunaNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnColunaNomeFomatado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnColunaTipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnColunaPK = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColumnColunaNull = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dataGridViewTabelas = new System.Windows.Forms.DataGridView();
             this.ColumnTabelaNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTabelaNomeFormatado = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -62,6 +57,12 @@ namespace DALEasy
             this.labelNameSpace = new System.Windows.Forms.Label();
             this.labelLinguagem = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.ColumnColunaNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnColunaNomeFomatado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnColunaTipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnColunaTamanho = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnColunaPK = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColumnColunaNull = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBoxBancoDeDados.SuspendLayout();
             this.groupBoxTabelaseColunas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewColunas)).BeginInit();
@@ -237,6 +238,7 @@ namespace DALEasy
             this.ColumnColunaNome,
             this.ColumnColunaNomeFomatado,
             this.ColumnColunaTipo,
+            this.ColumnColunaTamanho,
             this.ColumnColunaPK,
             this.ColumnColunaNull});
             this.dataGridViewColunas.Location = new System.Drawing.Point(227, 39);
@@ -245,39 +247,6 @@ namespace DALEasy
             this.dataGridViewColunas.RowHeadersVisible = false;
             this.dataGridViewColunas.Size = new System.Drawing.Size(533, 153);
             this.dataGridViewColunas.TabIndex = 1;
-            // 
-            // ColumnColunaNome
-            // 
-            this.ColumnColunaNome.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnColunaNome.HeaderText = "Nome";
-            this.ColumnColunaNome.Name = "ColumnColunaNome";
-            this.ColumnColunaNome.ReadOnly = true;
-            // 
-            // ColumnColunaNomeFomatado
-            // 
-            this.ColumnColunaNomeFomatado.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ColumnColunaNomeFomatado.HeaderText = "Nome Formatado";
-            this.ColumnColunaNomeFomatado.Name = "ColumnColunaNomeFomatado";
-            this.ColumnColunaNomeFomatado.ReadOnly = true;
-            this.ColumnColunaNomeFomatado.Width = 104;
-            // 
-            // ColumnColunaTipo
-            // 
-            this.ColumnColunaTipo.HeaderText = "Tipo";
-            this.ColumnColunaTipo.Name = "ColumnColunaTipo";
-            this.ColumnColunaTipo.ReadOnly = true;
-            // 
-            // ColumnColunaPK
-            // 
-            this.ColumnColunaPK.HeaderText = "PK";
-            this.ColumnColunaPK.Name = "ColumnColunaPK";
-            this.ColumnColunaPK.ReadOnly = true;
-            // 
-            // ColumnColunaNull
-            // 
-            this.ColumnColunaNull.HeaderText = "Null";
-            this.ColumnColunaNull.Name = "ColumnColunaNull";
-            this.ColumnColunaNull.ReadOnly = true;
             // 
             // dataGridViewTabelas
             // 
@@ -293,6 +262,7 @@ namespace DALEasy
             this.dataGridViewTabelas.RowHeadersVisible = false;
             this.dataGridViewTabelas.Size = new System.Drawing.Size(206, 153);
             this.dataGridViewTabelas.TabIndex = 0;
+            this.dataGridViewTabelas.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewTabelas_CellMouseClick);
             // 
             // ColumnTabelaNome
             // 
@@ -388,6 +358,50 @@ namespace DALEasy
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 0;
             // 
+            // ColumnColunaNome
+            // 
+            this.ColumnColunaNome.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ColumnColunaNome.HeaderText = "Nome";
+            this.ColumnColunaNome.Name = "ColumnColunaNome";
+            this.ColumnColunaNome.ReadOnly = true;
+            this.ColumnColunaNome.Width = 60;
+            // 
+            // ColumnColunaNomeFomatado
+            // 
+            this.ColumnColunaNomeFomatado.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ColumnColunaNomeFomatado.HeaderText = "Nome Formatado";
+            this.ColumnColunaNomeFomatado.Name = "ColumnColunaNomeFomatado";
+            this.ColumnColunaNomeFomatado.ReadOnly = true;
+            this.ColumnColunaNomeFomatado.Width = 104;
+            // 
+            // ColumnColunaTipo
+            // 
+            this.ColumnColunaTipo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnColunaTipo.HeaderText = "Tipo";
+            this.ColumnColunaTipo.Name = "ColumnColunaTipo";
+            this.ColumnColunaTipo.ReadOnly = true;
+            // 
+            // ColumnColunaTamanho
+            // 
+            this.ColumnColunaTamanho.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnColunaTamanho.HeaderText = "Tamanho";
+            this.ColumnColunaTamanho.Name = "ColumnColunaTamanho";
+            this.ColumnColunaTamanho.ReadOnly = true;
+            // 
+            // ColumnColunaPK
+            // 
+            this.ColumnColunaPK.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnColunaPK.HeaderText = "PK";
+            this.ColumnColunaPK.Name = "ColumnColunaPK";
+            this.ColumnColunaPK.ReadOnly = true;
+            // 
+            // ColumnColunaNull
+            // 
+            this.ColumnColunaNull.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnColunaNull.HeaderText = "Null";
+            this.ColumnColunaNull.Name = "ColumnColunaNull";
+            this.ColumnColunaNull.ReadOnly = true;
+            // 
             // Form_Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -435,11 +449,6 @@ namespace DALEasy
         private System.Windows.Forms.Label labelLinguagem;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button buttonImportar;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColunaNome;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColunaNomeFomatado;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColunaTipo;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnColunaPK;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnColunaNull;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTabelaNome;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTabelaNomeFormatado;
         private System.Windows.Forms.DataGridView dataGridViewMetodos;
@@ -447,6 +456,12 @@ namespace DALEasy
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMetodoNome;
         private System.Windows.Forms.Label labelTpo;
         private System.Windows.Forms.ComboBox comboBoxTipoBanco;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColunaNome;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColunaNomeFomatado;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColunaTipo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColunaTamanho;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnColunaPK;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnColunaNull;
     }
 }
 

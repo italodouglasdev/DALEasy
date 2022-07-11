@@ -17,7 +17,7 @@ namespace DALEasy
 
         public List<Coluna> Colunas { get; set; }
 
-        //public List<PK> ListaPKs { get; set; }
+        public List<PK> ListaPKs { get; set; }
 
 
         public Tabela Clone()
@@ -27,8 +27,8 @@ namespace DALEasy
 
         public static List<Tabela> MsSQLSelectAll(Banco banco)
         {
-            List<Tabela> ListaTabelas = new List<Tabela>();
-            Tabela Tabela = new Tabela();
+            var ListaTabelas = new List<Tabela>();
+            var Tabela = new Tabela();
 
             SqlConnection conexaoMSDE = new SqlConnection();
             SqlCommand comandoSQL = new SqlCommand();
@@ -52,8 +52,8 @@ namespace DALEasy
 
                     Tabela.NomeBanco = banco.Nome;
                     Tabela.GerarNomeFormatado();
-                    //Tabela.GerarListaPKs(banco.Servidor, banco.Nome, banco.Usuario, banco.Senha);
-                    //Tabela.Colunas = Coluna.SelectAll(banco, Tabela);
+                    Tabela.GerarListaPKs(banco.Servidor, banco.Nome, banco.Usuario, banco.Senha);
+                    Tabela.Colunas = Coluna.SelectAll(banco, Tabela);
                     ListaTabelas.Add(Tabela);
                 }
 
@@ -75,7 +75,17 @@ namespace DALEasy
         {
 
             this.NomeFormatado = Util.RemoverCaracteresEspeciais(this.Nome);
+        }
+
+        private void GerarListaPKs(string Servidor, string Banco, string Login, string Senha)
+        {
+
+            this.ListaPKs = new List<PK>();
+            this.ListaPKs = PK.SelectAll(Servidor, Banco, Login, Senha).FindAll(x => x.Tabela == this.Nome);
+
+            this.Nome = this.Nome;
 
         }
+
     }
 }

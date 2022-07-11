@@ -14,6 +14,10 @@ namespace DALEasy
 
         public bool Salvar()
         {
+
+            if (!string.IsNullOrEmpty(this.Banco.Senha))
+                this.Banco.Senha = Criptografia.Criptografar(this.Banco.Senha);
+
             try
             {
                 if (!Directory.Exists(Application.StartupPath + @"\Parametros"))
@@ -47,6 +51,10 @@ namespace DALEasy
 
                 if (Param.Banco == null)
                     Param.Banco = new Banco();
+
+                if (!string.IsNullOrEmpty(Param.Banco.Senha))
+                    Param.Banco.Senha = Criptografia.Descriptografar(Param.Banco.Senha);
+
 
                 if (Param.Banco.Tabelas == null)
                     Param.Banco.Tabelas = new List<Tabela>();

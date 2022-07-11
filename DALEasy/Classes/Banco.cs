@@ -21,8 +21,8 @@ namespace DALEasy
 
         public static List<Banco> MsSQLSelectAll(string Servidor, string Usuario, string Senha)
         {
-            List<Banco> ListaBancos = new List<Banco>();
-            Banco BancoDados = new Banco();
+            var ListaBancos = new List<Banco>();
+            var BancoDados = new Banco();
 
             SqlConnection conexaoMSDE = new SqlConnection();
             SqlCommand comandoSQL = new SqlCommand();

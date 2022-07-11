@@ -154,5 +154,36 @@ namespace DALEasy
 
 
         }
+
+        private void dataGridViewTabelas_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                var row = dataGridViewTabelas.Rows[e.RowIndex];
+
+                var NomeTabela = row.Cells[1].Value.ToString();
+
+                var Param = Parametros.Carregar();
+
+
+                if (Param.Banco.Tabelas.Count > 0)
+                {
+                    var tabela = Param.Banco.Tabelas.Find(t => t.NomeFormatado == NomeTabela);
+
+                    if (tabela != null)
+                    {
+                        if (dataGridViewColunas.Rows.Count > 0)
+                            dataGridViewColunas.Rows.Clear();
+
+                        foreach (Coluna coluna in tabela.Colunas)
+                        {
+                            dataGridViewColunas.Rows.Add(coluna.Nome, coluna.NomeFormatado, coluna.Tipo, coluna.Tamanho, coluna.PK, coluna.PermiteNulo);
+                        }
+                    }
+
+                }
+
+            }
+        }
     }
 }
