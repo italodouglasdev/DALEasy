@@ -411,7 +411,7 @@ namespace DALEasy
             this.Controls.Add(this.groupBoxTabelaseColunas);
             this.Controls.Add(this.groupBoxBancoDeDados);
             this.Name = "Form_Principal";
-            this.Text = "DALEasy";
+            this.Text = "DAL Easy";
             this.Load += new System.EventHandler(this.Form_Principal_Load);
             this.groupBoxBancoDeDados.ResumeLayout(false);
             this.groupBoxBancoDeDados.PerformLayout();

@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // As informações gerais sobre um assembly são controladas por
 // conjunto de atributos. Altere estes valores de atributo para modificar as informações
 // associadas a um assembly.
-[assembly: AssemblyTitle("DALEasy")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("DAL Easy")]
+[assembly: AssemblyDescription("Facilitador para criação de bancos de dados e classes de acesso a dadas.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Italo Douglas")]
 [assembly: AssemblyProduct("DALEasy")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
