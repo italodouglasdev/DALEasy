@@ -11,6 +11,10 @@ namespace DALEasy
 
         public Banco Banco { get; set; }
 
+        public Linguagem Linguagem { get; set; }
+
+        //public List<Metodo> ListaMetodos { get; set; } 
+
 
         public bool Salvar()
         {
@@ -42,6 +46,8 @@ namespace DALEasy
             var Param = new Parametros();
             Param.Banco = new Banco();
             Param.Banco.Tabelas = new List<Tabela>();
+            Param.Linguagem = new Linguagem();
+            //Param.ListaMetodos = new List<Metodo>();
 
             try
             {

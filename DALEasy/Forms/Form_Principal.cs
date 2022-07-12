@@ -144,6 +144,9 @@ namespace DALEasy
                     dataGridViewTabelas.Rows.Add(Tabela.Nome, Tabela.NomeFormatado);
                 }
 
+                var ListaMetodosPadroes = Metodo.GerarMetodosPadroes();
+
+
             }
             else
             {
@@ -165,7 +168,6 @@ namespace DALEasy
 
                 var Param = Parametros.Carregar();
 
-
                 if (Param.Banco.Tabelas.Count > 0)
                 {
                     var tabela = Param.Banco.Tabelas.Find(t => t.NomeFormatado == NomeTabela);
@@ -183,6 +185,40 @@ namespace DALEasy
 
                 }
 
+            }
+        }
+
+        private void dataGridViewColunas_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            var Param = Parametros.Carregar();
+
+            if (e.RowIndex >= 0)
+            {
+                var row = dataGridViewTabelas.Rows[e.RowIndex];
+                var NomeTabela = dataGridViewTabelas.SelectedCells[0].Value.ToString();
+                var NomeColuna = dataGridViewColunas.SelectedCells[0].Value.ToString();
+
+                var Coluna = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela).Colunas.Find(c => c.Nome == NomeColuna);
+
+                var FormCadastro = new Form_Cadastro();
+                FormCadastro.CarregarCadastro(Coluna);
+            }
+        }
+
+        private void dataGridViewTabelas_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var Param = Parametros.Carregar();
+
+            if (e.RowIndex >= 0)
+            {
+                var row = dataGridViewTabelas.Rows[e.RowIndex];
+                var NomeTabela = dataGridViewTabelas.SelectedCells[0].Value.ToString();               
+
+                var Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
+
+                var FormCadastro = new Form_Cadastro();
+                FormCadastro.CarregarCadastro(Tabela);
             }
         }
     }

@@ -21,7 +21,7 @@ namespace DALEasy
             return (Coluna)this.MemberwiseClone();
         }
 
-        public static List<Coluna> SelectAll(Banco banco, Tabela Tabela)
+        public static List<Coluna> MsSQLSelectAll(Banco banco, Tabela Tabela)
         {
 
             var ListaColunas = new List<Coluna>();

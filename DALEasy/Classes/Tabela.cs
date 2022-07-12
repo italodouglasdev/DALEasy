@@ -53,7 +53,7 @@ namespace DALEasy
                     Tabela.NomeBanco = banco.Nome;
                     Tabela.GerarNomeFormatado();
                     Tabela.GerarListaPKs(banco.Servidor, banco.Nome, banco.Usuario, banco.Senha);
-                    Tabela.Colunas = Coluna.SelectAll(banco, Tabela);
+                    Tabela.Colunas = Coluna.MsSQLSelectAll(banco, Tabela);
                     ListaTabelas.Add(Tabela);
                 }
 
