@@ -20,11 +20,19 @@ namespace DALEasy
             textBoxUsuario.Text = Param.Banco.Usuario;
             textBoxSenha.Text = Param.Banco.Senha;
             comboBoxBanco.Text = Param.Banco.Nome;
+            comboBoxLinguagem.Text = Param.Linguagem.Nome;
+            textBoxNameSpace.Text = Param.Linguagem.NamespaceMetodos;
+
+
+            if (!string.IsNullOrEmpty(Param.Banco.Nome))
+                groupBoxBancoDeDados.Enabled = false;
 
             foreach (var Tabela in Param.Banco.Tabelas)
             {
                 dataGridViewTabelas.Rows.Add(Tabela.Nome, Tabela.NomeFormatado);
             }
+
+
 
 
         }
@@ -128,8 +136,20 @@ namespace DALEasy
 
                 }
 
-
                 Param.Banco.Tabelas = ListaTabelas;
+
+
+                foreach (var Tabela in Param.Banco.Tabelas)
+                {
+                    dataGridViewTabelas.Rows.Add(Tabela.Nome, Tabela.NomeFormatado);
+                    Tabela.Metodos = Metodo.GerarMetodosPadroes(Tabela);
+                }
+
+                comboBoxLinguagem.Text = "C#";
+                Param.Linguagem.Nome = "C#";
+
+                labelNameSpace.Text = Param.Banco.Nome + "Db";
+                Param.Linguagem.NamespaceMetodos = Param.Banco.Nome + "Db";
 
 
                 if (Param.Salvar())
@@ -137,16 +157,6 @@ namespace DALEasy
                     comboBoxBanco.Enabled = false;
                     buttonImportar.Enabled = false;
                 };
-
-
-                foreach (var Tabela in Param.Banco.Tabelas)
-                {
-                    dataGridViewTabelas.Rows.Add(Tabela.Nome, Tabela.NomeFormatado);
-                }
-
-                var ListaMetodosPadroes = Metodo.GerarMetodosPadroes();
-
-
             }
             else
             {
@@ -181,6 +191,16 @@ namespace DALEasy
                         {
                             dataGridViewColunas.Rows.Add(coluna.Nome, coluna.NomeFormatado, coluna.Tipo, coluna.Tamanho, coluna.PK, coluna.PermiteNulo);
                         }
+
+
+                        if (dataGridViewMetodos.Rows.Count > 0)
+                            dataGridViewMetodos.Rows.Clear();
+
+                        foreach (Metodo metodo in tabela.Metodos)
+                        {
+                            dataGridViewMetodos.Rows.Add(metodo.Nome, metodo.DML);
+                        }
+
                     }
 
                 }
@@ -213,13 +233,48 @@ namespace DALEasy
             if (e.RowIndex >= 0)
             {
                 var row = dataGridViewTabelas.Rows[e.RowIndex];
-                var NomeTabela = dataGridViewTabelas.SelectedCells[0].Value.ToString();               
+                var NomeTabela = dataGridViewTabelas.SelectedCells[0].Value.ToString();
 
                 var Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
 
                 var FormCadastro = new Form_Cadastro();
                 FormCadastro.CarregarCadastro(Tabela);
             }
+        }
+
+
+        private void comboBoxLinguagem_MouseLeave(object sender, EventArgs e)
+        {
+            var Param = Parametros.Carregar();
+            Param.Linguagem.Nome = comboBoxLinguagem.Text;
+            Param.Salvar();
+
+        }
+
+        private void textBoxNameSpace_MouseLeave(object sender, EventArgs e)
+        {
+            var Param = Parametros.Carregar();
+            Param.Linguagem.NamespaceMetodos = textBoxNameSpace.Text;
+            Param.Salvar();
+        }
+
+        private void buttonGerarClasse_Click(object sender, EventArgs e)
+        {
+
+            var Param = Parametros.Carregar();
+
+            var NomeTabela = dataGridViewTabelas.SelectedCells[0].Value.ToString();
+
+            var Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
+
+            Classe.GerarClasseMsSQL(Param, Tabela);
+        }
+
+        private void buttonGerarClasses_Click(object sender, EventArgs e)
+        {
+            var Param = Parametros.Carregar();            
+
+            Classe.GerarClassesMsSQL(Param);
         }
     }
 }

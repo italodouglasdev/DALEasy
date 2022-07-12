@@ -17,7 +17,9 @@ namespace DALEasy
 
         public List<Coluna> Colunas { get; set; }
 
-        public List<PK> ListaPKs { get; set; }
+        public List<PK> PKs { get; set; }
+
+        public List<Metodo> Metodos { get; set; }
 
 
         public Tabela Clone()
@@ -80,8 +82,8 @@ namespace DALEasy
         private void GerarListaPKs(string Servidor, string Banco, string Login, string Senha)
         {
 
-            this.ListaPKs = new List<PK>();
-            this.ListaPKs = PK.SelectAll(Servidor, Banco, Login, Senha).FindAll(x => x.Tabela == this.Nome);
+            this.PKs = new List<PK>();
+            this.PKs = PK.SelectAll(Servidor, Banco, Login, Senha).FindAll(x => x.Tabela == this.Nome);
 
             this.Nome = this.Nome;
 

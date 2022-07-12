@@ -87,7 +87,7 @@ namespace DALEasy
 
         private void VeriricarPk(Tabela tabela)
         {
-            var pks = tabela.ListaPKs.FindAll(x => x.Coluna == this.Nome);
+            var pks = tabela.PKs.FindAll(x => x.Coluna == this.Nome);
 
             if (pks.Count > 0)
             {

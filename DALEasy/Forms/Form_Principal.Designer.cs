@@ -56,13 +56,16 @@ namespace DALEasy
             this.ColumnTabelaNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTabelaNomeFormatado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBoxClassesEMetodos = new System.Windows.Forms.GroupBox();
+            this.buttonGerarClasse = new System.Windows.Forms.Button();
+            this.buttonGerarClasses = new System.Windows.Forms.Button();
             this.labelMetodos = new System.Windows.Forms.Label();
             this.dataGridViewMetodos = new System.Windows.Forms.DataGridView();
             this.ColumnMetodoNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnMetodosDML = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBoxNameSpace = new System.Windows.Forms.TextBox();
             this.labelNameSpace = new System.Windows.Forms.Label();
             this.labelLinguagem = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxLinguagem = new System.Windows.Forms.ComboBox();
             this.groupBoxBancoDeDados.SuspendLayout();
             this.groupBoxTabelaseColunas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewColunas)).BeginInit();
@@ -87,7 +90,7 @@ namespace DALEasy
             this.groupBoxBancoDeDados.Controls.Add(this.textBoxServidor);
             this.groupBoxBancoDeDados.Location = new System.Drawing.Point(12, 12);
             this.groupBoxBancoDeDados.Name = "groupBoxBancoDeDados";
-            this.groupBoxBancoDeDados.Size = new System.Drawing.Size(776, 77);
+            this.groupBoxBancoDeDados.Size = new System.Drawing.Size(776, 72);
             this.groupBoxBancoDeDados.TabIndex = 0;
             this.groupBoxBancoDeDados.TabStop = false;
             this.groupBoxBancoDeDados.Text = "Banco de Dados";
@@ -204,9 +207,9 @@ namespace DALEasy
             this.groupBoxTabelaseColunas.Controls.Add(this.labelTabelas);
             this.groupBoxTabelaseColunas.Controls.Add(this.dataGridViewColunas);
             this.groupBoxTabelaseColunas.Controls.Add(this.dataGridViewTabelas);
-            this.groupBoxTabelaseColunas.Location = new System.Drawing.Point(12, 95);
+            this.groupBoxTabelaseColunas.Location = new System.Drawing.Point(12, 89);
             this.groupBoxTabelaseColunas.Name = "groupBoxTabelaseColunas";
-            this.groupBoxTabelaseColunas.Size = new System.Drawing.Size(776, 204);
+            this.groupBoxTabelaseColunas.Size = new System.Drawing.Size(776, 194);
             this.groupBoxTabelaseColunas.TabIndex = 1;
             this.groupBoxTabelaseColunas.TabStop = false;
             this.groupBoxTabelaseColunas.Text = "Tabelas e Colunas";
@@ -325,23 +328,45 @@ namespace DALEasy
             // 
             // groupBoxClassesEMetodos
             // 
+            this.groupBoxClassesEMetodos.Controls.Add(this.buttonGerarClasse);
+            this.groupBoxClassesEMetodos.Controls.Add(this.buttonGerarClasses);
             this.groupBoxClassesEMetodos.Controls.Add(this.labelMetodos);
             this.groupBoxClassesEMetodos.Controls.Add(this.dataGridViewMetodos);
             this.groupBoxClassesEMetodos.Controls.Add(this.textBoxNameSpace);
             this.groupBoxClassesEMetodos.Controls.Add(this.labelNameSpace);
             this.groupBoxClassesEMetodos.Controls.Add(this.labelLinguagem);
-            this.groupBoxClassesEMetodos.Controls.Add(this.comboBox1);
-            this.groupBoxClassesEMetodos.Location = new System.Drawing.Point(12, 305);
+            this.groupBoxClassesEMetodos.Controls.Add(this.comboBoxLinguagem);
+            this.groupBoxClassesEMetodos.Location = new System.Drawing.Point(12, 287);
             this.groupBoxClassesEMetodos.Name = "groupBoxClassesEMetodos";
-            this.groupBoxClassesEMetodos.Size = new System.Drawing.Size(776, 133);
+            this.groupBoxClassesEMetodos.Size = new System.Drawing.Size(776, 151);
             this.groupBoxClassesEMetodos.TabIndex = 2;
             this.groupBoxClassesEMetodos.TabStop = false;
             this.groupBoxClassesEMetodos.Text = "Classes e Métodos";
             // 
+            // buttonGerarClasse
+            // 
+            this.buttonGerarClasse.Location = new System.Drawing.Point(662, 89);
+            this.buttonGerarClasse.Name = "buttonGerarClasse";
+            this.buttonGerarClasse.Size = new System.Drawing.Size(98, 23);
+            this.buttonGerarClasse.TabIndex = 7;
+            this.buttonGerarClasse.Text = "Gerar Classe";
+            this.buttonGerarClasse.UseVisualStyleBackColor = true;
+            this.buttonGerarClasse.Click += new System.EventHandler(this.buttonGerarClasse_Click);
+            // 
+            // buttonGerarClasses
+            // 
+            this.buttonGerarClasses.Location = new System.Drawing.Point(662, 118);
+            this.buttonGerarClasses.Name = "buttonGerarClasses";
+            this.buttonGerarClasses.Size = new System.Drawing.Size(98, 23);
+            this.buttonGerarClasses.TabIndex = 6;
+            this.buttonGerarClasses.Text = "Gerar Classes";
+            this.buttonGerarClasses.UseVisualStyleBackColor = true;
+            this.buttonGerarClasses.Click += new System.EventHandler(this.buttonGerarClasses_Click);
+            // 
             // labelMetodos
             // 
             this.labelMetodos.AutoSize = true;
-            this.labelMetodos.Location = new System.Drawing.Point(157, 17);
+            this.labelMetodos.Location = new System.Drawing.Point(224, 9);
             this.labelMetodos.Name = "labelMetodos";
             this.labelMetodos.Size = new System.Drawing.Size(48, 13);
             this.labelMetodos.TabIndex = 5;
@@ -353,12 +378,13 @@ namespace DALEasy
             this.dataGridViewMetodos.AllowUserToDeleteRows = false;
             this.dataGridViewMetodos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMetodos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnMetodoNome});
-            this.dataGridViewMetodos.Location = new System.Drawing.Point(160, 32);
+            this.ColumnMetodoNome,
+            this.ColumnMetodosDML});
+            this.dataGridViewMetodos.Location = new System.Drawing.Point(227, 25);
             this.dataGridViewMetodos.Name = "dataGridViewMetodos";
             this.dataGridViewMetodos.ReadOnly = true;
             this.dataGridViewMetodos.RowHeadersVisible = false;
-            this.dataGridViewMetodos.Size = new System.Drawing.Size(302, 95);
+            this.dataGridViewMetodos.Size = new System.Drawing.Size(325, 116);
             this.dataGridViewMetodos.TabIndex = 4;
             // 
             // ColumnMetodoNome
@@ -368,17 +394,24 @@ namespace DALEasy
             this.ColumnMetodoNome.Name = "ColumnMetodoNome";
             this.ColumnMetodoNome.ReadOnly = true;
             // 
+            // ColumnMetodosDML
+            // 
+            this.ColumnMetodosDML.HeaderText = "DML";
+            this.ColumnMetodosDML.Name = "ColumnMetodosDML";
+            this.ColumnMetodosDML.ReadOnly = true;
+            // 
             // textBoxNameSpace
             // 
-            this.textBoxNameSpace.Location = new System.Drawing.Point(15, 91);
+            this.textBoxNameSpace.Location = new System.Drawing.Point(49, 98);
             this.textBoxNameSpace.Name = "textBoxNameSpace";
             this.textBoxNameSpace.Size = new System.Drawing.Size(121, 20);
             this.textBoxNameSpace.TabIndex = 3;
+            this.textBoxNameSpace.MouseLeave += new System.EventHandler(this.textBoxNameSpace_MouseLeave);
             // 
             // labelNameSpace
             // 
             this.labelNameSpace.AutoSize = true;
-            this.labelNameSpace.Location = new System.Drawing.Point(12, 76);
+            this.labelNameSpace.Location = new System.Drawing.Point(46, 83);
             this.labelNameSpace.Name = "labelNameSpace";
             this.labelNameSpace.Size = new System.Drawing.Size(66, 13);
             this.labelNameSpace.TabIndex = 2;
@@ -387,22 +420,23 @@ namespace DALEasy
             // labelLinguagem
             // 
             this.labelLinguagem.AutoSize = true;
-            this.labelLinguagem.Location = new System.Drawing.Point(15, 29);
+            this.labelLinguagem.Location = new System.Drawing.Point(49, 36);
             this.labelLinguagem.Name = "labelLinguagem";
             this.labelLinguagem.Size = new System.Drawing.Size(59, 13);
             this.labelLinguagem.TabIndex = 1;
             this.labelLinguagem.Text = "Linguagem";
             // 
-            // comboBox1
+            // comboBoxLinguagem
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.comboBoxLinguagem.FormattingEnabled = true;
+            this.comboBoxLinguagem.Items.AddRange(new object[] {
             "C#",
             "VB.Net"});
-            this.comboBox1.Location = new System.Drawing.Point(15, 44);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 0;
+            this.comboBoxLinguagem.Location = new System.Drawing.Point(49, 51);
+            this.comboBoxLinguagem.Name = "comboBoxLinguagem";
+            this.comboBoxLinguagem.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxLinguagem.TabIndex = 0;
+            this.comboBoxLinguagem.MouseLeave += new System.EventHandler(this.comboBoxLinguagem_MouseLeave);
             // 
             // Form_Principal
             // 
@@ -446,16 +480,13 @@ namespace DALEasy
         private System.Windows.Forms.DataGridView dataGridViewColunas;
         private System.Windows.Forms.DataGridView dataGridViewTabelas;
         private System.Windows.Forms.GroupBox groupBoxClassesEMetodos;
-        private System.Windows.Forms.TextBox textBoxNameSpace;
-        private System.Windows.Forms.Label labelNameSpace;
         private System.Windows.Forms.Label labelLinguagem;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxLinguagem;
         private System.Windows.Forms.Button buttonImportar;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTabelaNome;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTabelaNomeFormatado;
         private System.Windows.Forms.DataGridView dataGridViewMetodos;
         private System.Windows.Forms.Label labelMetodos;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMetodoNome;
         private System.Windows.Forms.Label labelTpo;
         private System.Windows.Forms.ComboBox comboBoxTipoBanco;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColunaNome;
@@ -464,6 +495,12 @@ namespace DALEasy
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnColunaTamanho;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnColunaPK;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnColunaNull;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMetodoNome;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMetodosDML;
+        private System.Windows.Forms.TextBox textBoxNameSpace;
+        private System.Windows.Forms.Label labelNameSpace;
+        private System.Windows.Forms.Button buttonGerarClasse;
+        private System.Windows.Forms.Button buttonGerarClasses;
     }
 }
 

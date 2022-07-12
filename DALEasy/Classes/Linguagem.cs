@@ -11,5 +11,7 @@ namespace DALEasy
 
         public  string Nome { get; set; }
 
+        public string NamespaceMetodos { get; set; }
+
     }
 }
