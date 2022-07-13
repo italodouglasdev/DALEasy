@@ -12,20 +12,10 @@ namespace DALEasy
     {
 
 
-        public static string GerarClassesMsSQL(Parametros Param)
+        public static void GerarClassesMsSQL(Parametros Param)
         {
-
-            StringBuilder Script = new StringBuilder();
-
-
-            foreach(var Tabela in Param.Banco.Tabelas)
-            {
-                var MetodoString = GerarClasseMsSQL(Param, Tabela);
-                Script.Append(MetodoString);
-            }
-
-            return Script.ToString();
-
+            foreach (var Tabela in Param.Banco.Tabelas)
+                GerarClasseMsSQL(Param, Tabela);
         }
 
 
