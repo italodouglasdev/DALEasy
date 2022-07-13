@@ -34,10 +34,11 @@ namespace DALEasy
             Script.Append("{ \n");
 
             //Criar funcao para gerar as propriedade dos método
-            //foreach (Coluna coluna in tabela.Colunas)
-            //{
-            //    Script.Append(coluna.Propriedade + " \n");
-            //}
+
+            foreach (Coluna coluna in tabela.Colunas)
+            {
+                Script.Append(coluna.GerarPropriedade(Param) + " \n");
+            }
 
 
             foreach (var metodo in tabela.Metodos)
@@ -88,10 +89,10 @@ namespace DALEasy
 
                 //Criar metodo para preencher as propriedades do obejto com o dr
                 //Script.Append(tabela.NomeFormatado + " = new " + tabela.NomeFormatado + "(); \n");
-                //foreach (Coluna coluna in tabela.Colunas)
-                //{
-                //    Script.Append(coluna.DataRead + " \n");
-                //}
+                foreach (Coluna coluna in tabela.Colunas)
+                {
+                    Script.Append(coluna.GerarDataRead(Param, tabela) + " \n");
+                }
 
                 Script.Append(" \n");
 
