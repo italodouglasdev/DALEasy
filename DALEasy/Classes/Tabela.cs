@@ -73,6 +73,23 @@ namespace DALEasy
             }
         }
 
+        public string GerarParametros(Parametros Param, Metodo metodo)
+        {
+            StringBuilder Script = new StringBuilder();
+
+            var ListaColunasWHERE = this.Colunas.FindAll(c => metodo.ListaColunasWHERE.Any(cm => c.Nome == cm));
+
+            foreach (Coluna coluna in ListaColunasWHERE)
+            {
+                Script.Append("" + coluna.GerarTipoLinguagem(Param) + " " + coluna.NomeFormatado.ToLower() + "");
+                if (ListaColunasWHERE.IndexOf(coluna) != ListaColunasWHERE.Count - 1)
+                    Script.Append(" ");
+            }
+
+            return Script.ToString();
+
+        }
+
         private void GerarNomeFormatado()
         {
 
@@ -86,6 +103,180 @@ namespace DALEasy
             this.PKs = PK.SelectAll(Servidor, Banco, Login, Senha).FindAll(x => x.Tabela == this.Nome);
 
             this.Nome = this.Nome;
+
+        }
+
+        public string GerarComandoMsSQL(Parametros Param, Metodo metodo)
+        {
+            StringBuilder Script = new StringBuilder();
+
+            Script.Append(metodo.DML + " ");
+
+            if (metodo.DML == "SELECT")
+            {
+
+                var ListaColunas = this.Colunas.FindAll(c => metodo.ListaColunas.Any(cm => c.Nome == cm));
+
+                foreach (Coluna coluna in ListaColunas)
+                {
+                    Script.Append("[" + coluna.Nome + "]");
+                    if (ListaColunas.IndexOf(coluna) != ListaColunas.Count - 1)
+                        Script.Append(", ");
+
+                }
+
+                Script.Append(" FROM [" + this.Nome + "] ");
+
+
+                var ListaColunasWHERE = this.Colunas.FindAll(c => metodo.ListaColunasWHERE.Any(cm => c.Nome == cm));
+
+                if (ListaColunasWHERE.Count > 0)
+                {
+                    Script.Append("WHERE ");
+                    foreach (Coluna coluna in ListaColunasWHERE)
+                    {
+                        Script.Append("[" + coluna.Nome + "] = '\" + " + coluna.NomeFormatado.ToLower() + " + \"'");
+                        if (ListaColunasWHERE.IndexOf(coluna) != ListaColunasWHERE.Count - 1)
+                            Script.Append(" AND ");
+                    }
+                }
+
+            }
+            else if (metodo.DML == "SELECTALL")
+            {
+
+                var ListaColunas = this.Colunas.FindAll(c => metodo.ListaColunas.Any(cm => c.Nome == cm));
+
+                foreach (Coluna coluna in ListaColunas)
+                {
+                    Script.Append("[" + coluna.Nome + "]");
+                    if (ListaColunas.IndexOf(coluna) != ListaColunas.Count - 1)
+                        Script.Append(", ");
+
+                }
+
+                Script.Append(" FROM [" + this.Nome + "] ");
+
+
+                var ListaColunasWHERE = this.Colunas.FindAll(c => metodo.ListaColunasWHERE.Any(cm => c.Nome == cm));
+
+                if (ListaColunasWHERE.Count > 0)
+                {
+                    Script.Append("WHERE ");
+                    foreach (Coluna coluna in ListaColunasWHERE)
+                    {
+                        Script.Append("[" + coluna.Nome + "] =  '\" + this." + coluna.Nome + " + \"'");
+                        if (ListaColunasWHERE.IndexOf(coluna) != ListaColunasWHERE.Count - 1)
+                            Script.Append(" AND ");
+                    }
+                }
+
+            }
+            else if (metodo.DML == "INSERT")
+            {
+
+                Script.Append("INTO [" + this.Nome + "] (");
+
+                var ListaColunas = this.Colunas.FindAll(c => metodo.ListaColunas.Any(cm => c.Nome == cm));
+
+                foreach (Coluna coluna in ListaColunas)
+                {
+                    Script.Append("[" + coluna.Nome + "]");
+                    if (ListaColunas.IndexOf(coluna) != ListaColunas.Count - 1)
+                        Script.Append(", ");
+                }
+
+                Script.Append(") OUTPUT ");
+
+                foreach (Coluna coluna in ListaColunas)
+                {
+                    Script.Append("Inserted.[" + coluna.Nome + "] ");
+
+
+                    if (ListaColunas.IndexOf(coluna) != ListaColunas.Count - 1)
+                        Script.Append("Inserted.[" + coluna.Nome + "], ");
+
+                }
+
+                Script.Append(" VALUES (");
+
+                foreach (Coluna coluna in ListaColunas)
+                {
+                    if (coluna.Tipo.Contains("decimal") == true)
+                    {
+                        Script.Append("'\" + Util.FormatMoney(" + coluna.NomeFormatado + ") + \"'");
+                    }
+                    else
+                    {
+                        Script.Append("'\" + " + coluna.NomeFormatado + " + \"'");
+                    }
+
+                    if (ListaColunas.IndexOf(coluna) != ListaColunas.Count - 1)
+                        Script.Append(", ");
+                }
+
+                Script.Append(")");
+
+            }
+            else if (metodo.DML == "UPDATE")
+            {
+                Script.Append("[" + this.Nome + "] SET ");
+
+                var ListaColunas = this.Colunas.FindAll(c => metodo.ListaColunas.Any(cm => c.Nome == cm));
+
+                foreach (Coluna coluna in ListaColunas)
+                {
+
+                    if (coluna.Tipo.Contains("decimal") == true)
+                    {
+                        Script.Append("[" + coluna.Nome + "] = '\" + Util.FormatMoney(" + coluna.NomeFormatado + ") + \"'");
+                    }
+                    else
+                    {
+                        Script.Append("[" + coluna.Nome + "] = '\" + " + coluna.NomeFormatado + " + \"'");
+                    }
+
+                    if (ListaColunas.IndexOf(coluna) != ListaColunas.Count - 1)
+                        Script.Append(", ");
+                }
+
+                var ListaColunasWHERE = this.Colunas.FindAll(c => metodo.ListaColunasWHERE.Any(cm => c.Nome == cm));
+
+                if (ListaColunasWHERE.Count > 0)
+                {
+                    Script.Append(" WHERE ");
+                    foreach (Coluna coluna in ListaColunasWHERE)
+                    {
+                        Script.Append("[" + coluna.Nome + "] =  '\" + this." + coluna.Nome + " + \"'");
+                        if (ListaColunasWHERE.IndexOf(coluna) != ListaColunasWHERE.Count - 1)
+                            Script.Append(" AND ");
+                    }
+                }
+
+            }
+            else if (metodo.DML == "DELETE")
+            {
+
+                var ListaColunasWHERE = this.Colunas.FindAll(c => metodo.ListaColunasWHERE.Any(cm => c.Nome == cm));
+
+                Script.Append("FROM [" + this.Nome + "]");
+
+                if (ListaColunasWHERE.Count > 0)
+                {
+                    Script.Append(" WHERE ");
+                    foreach (Coluna coluna in ListaColunasWHERE)
+                    {
+                        Script.Append("[" + coluna.Nome + "] =  '\" + this." + coluna.Nome + " + \"'");
+                        if (ListaColunasWHERE.IndexOf(coluna) != ListaColunasWHERE.Count - 1)
+                            Script.Append(" AND ");
+                    }
+                }
+            }
+
+
+            Script.Append(";");
+
+            return Script.ToString();
 
         }
 

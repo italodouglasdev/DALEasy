@@ -281,7 +281,7 @@ namespace DALEasy
                     DataRead = tabela.Nome + "." + this.NomeFormatado + " = If(Not String.IsNullOrEmpty(dr(\"" + this.Nome + "\").ToString()), CType(dr(\"" + this.Nome + "\"), " + this.GerarTipoLinguagem(Param) + "), new DateTime())";
 
             }
-            else if (this.Tipo.Contains("bool"))
+            else if (this.Tipo.Contains("bool") || this.Tipo.Contains("bit"))
             {
                 DataRead = tabela.Nome + "." + this.NomeFormatado + " = !string.IsNullOrEmpty(dr[\"" + this.Nome + "\"].ToString())?(" + this.GerarTipoLinguagem(Param) + ")dr[\"" + this.Nome + "\"] : false;";
 
@@ -305,7 +305,7 @@ namespace DALEasy
                     DataRead = tabela.Nome + "." + this.NomeFormatado + " = If(Not String.IsNullOrEmpty(dr(\"" + this.Nome + "\").ToString()), CType(dr(\"" + this.Nome + "\"), " + this.GerarTipoLinguagem(Param) + "), New Byte() { })";
 
             }
-            else if (this.Tipo.Contains("char"))
+            else if (this.Tipo.Contains("char") && this.Tipo != "nvarchar")
             {
                 DataRead = tabela.Nome + "." + this.NomeFormatado + " = !string.IsNullOrEmpty(dr[\"" + this.Nome + "\"].ToString())?(" + this.GerarTipoLinguagem(Param) + ")dr[\"" + this.Nome + "\"] : new char();";
                 if (Param.Linguagem.Nome == "VB.Net")

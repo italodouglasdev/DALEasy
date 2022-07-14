@@ -66,6 +66,7 @@ namespace DALEasy
             this.labelNameSpace = new System.Windows.Forms.Label();
             this.labelLinguagem = new System.Windows.Forms.Label();
             this.comboBoxLinguagem = new System.Windows.Forms.ComboBox();
+            this.buttonLimpar = new System.Windows.Forms.Button();
             this.groupBoxBancoDeDados.SuspendLayout();
             this.groupBoxTabelaseColunas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewColunas)).BeginInit();
@@ -328,6 +329,7 @@ namespace DALEasy
             // 
             // groupBoxClassesEMetodos
             // 
+            this.groupBoxClassesEMetodos.Controls.Add(this.buttonLimpar);
             this.groupBoxClassesEMetodos.Controls.Add(this.buttonGerarClasse);
             this.groupBoxClassesEMetodos.Controls.Add(this.buttonGerarClasses);
             this.groupBoxClassesEMetodos.Controls.Add(this.labelMetodos);
@@ -438,6 +440,16 @@ namespace DALEasy
             this.comboBoxLinguagem.TabIndex = 0;
             this.comboBoxLinguagem.MouseLeave += new System.EventHandler(this.comboBoxLinguagem_MouseLeave);
             // 
+            // buttonLimpar
+            // 
+            this.buttonLimpar.Location = new System.Drawing.Point(662, 25);
+            this.buttonLimpar.Name = "buttonLimpar";
+            this.buttonLimpar.Size = new System.Drawing.Size(98, 23);
+            this.buttonLimpar.TabIndex = 8;
+            this.buttonLimpar.Text = "Limpar";
+            this.buttonLimpar.UseVisualStyleBackColor = true;
+            this.buttonLimpar.Click += new System.EventHandler(this.buttonLimpar_Click);
+            // 
             // Form_Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -501,6 +513,7 @@ namespace DALEasy
         private System.Windows.Forms.Label labelNameSpace;
         private System.Windows.Forms.Button buttonGerarClasse;
         private System.Windows.Forms.Button buttonGerarClasses;
+        private System.Windows.Forms.Button buttonLimpar;
     }
 }
 

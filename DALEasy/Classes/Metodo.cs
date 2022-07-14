@@ -29,7 +29,7 @@ namespace DALEasy
 
             var MetodoSelect = new Metodo();
             MetodoSelect.Nome = "Select";
-            MetodoSelect.DML = "SELEC";
+            MetodoSelect.DML = "SELECT";
             MetodoSelect.RetornaLista = false;
             MetodoSelect.ListaColunas = new List<string>();
             MetodoSelect.ListaColunasWHERE = new List<string>();
@@ -44,7 +44,7 @@ namespace DALEasy
 
             var MetodoSelectAll = new Metodo();
             MetodoSelectAll.Nome = "SelectAll";
-            MetodoSelectAll.DML = "SELEC";
+            MetodoSelectAll.DML = "SELECALL";
             MetodoSelectAll.RetornaLista = true;
             MetodoSelectAll.ListaColunas = new List<string>();
             MetodoSelectAll.ListaColunasWHERE = new List<string>();

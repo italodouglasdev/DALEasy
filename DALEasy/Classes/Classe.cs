@@ -33,7 +33,6 @@ namespace DALEasy
             Script.Append("public class " + tabela.NomeFormatado + " \n");
             Script.Append("{ \n");
 
-            //Criar funcao para gerar as propriedade dos método
 
             foreach (Coluna coluna in tabela.Colunas)
             {
@@ -43,7 +42,7 @@ namespace DALEasy
 
             foreach (var metodo in tabela.Metodos)
             {
-                //Selects
+                Script.Append(" \n");
                 Script.Append(" \n");
 
                 if (metodo.RetornaLista == true)
@@ -52,23 +51,25 @@ namespace DALEasy
                 }
                 else
                 {
-                    Script.Append(" public " + tabela.NomeFormatado + " " + metodo.Nome + "() { \n");
+                    if (metodo.DML == "SELECT")
+                    {
+                        Script.Append(" public static " + tabela.NomeFormatado + " " + metodo.Nome + "(" + tabela.GerarParametros(Param, metodo) + ") { \n");
+                    }
+                    else
+                    {
+                        Script.Append(" public " + tabela.NomeFormatado + " " + metodo.Nome + "() { \n");
+                    }
                 }
-
-
-                Script.Append(" \n");
 
                 if (metodo.RetornaLista == true)
                     Script.Append("List<" + tabela.NomeFormatado + "> Lista" + tabela.NomeFormatado + " = new List<" + tabela.NomeFormatado + ">(); \n");
 
                 Script.Append("" + tabela.NomeFormatado + " " + tabela.NomeFormatado + " = new " + tabela.NomeFormatado + "(); \n");
-                Script.Append(" \n");
-                Script.Append(" \n");
                 Script.Append(" SqlConnection conexaoMSDE = new SqlConnection(); \n");
                 Script.Append(" SqlCommand comandoSQL = new SqlCommand(); \n");
-                Script.Append("" + tabela.NomeFormatado + " " + tabela.NomeFormatado + " = new " + tabela.NomeFormatado + "(); \n");
+                Script.Append(" conexaoMSDE = new SqlConnection(\"Initial Catalog=" + Param.Banco.Nome + "; User ID=" + Param.Banco.Usuario + "; Password=" + Param.Banco.Senha + "; Data Source=" + Param.Banco.Servidor + "\"); \n");
                 Script.Append(" comandoSQL.Connection = conexaoMSDE; \n");
-                //Script.Append(" comandoSQL.CommandText = \"" + GerarStringSelectAll(tabela, tabela.Colunas) + "\"; \n");
+                Script.Append(" comandoSQL.CommandText = \"" + tabela.GerarComandoMsSQL(Param, metodo) + "\"; \n");
                 Script.Append(" try \n");
                 Script.Append(" { \n");
                 Script.Append(" conexaoMSDE.Open(); \n");
@@ -87,8 +88,6 @@ namespace DALEasy
 
                 Script.Append(" \n");
 
-                //Criar metodo para preencher as propriedades do obejto com o dr
-                //Script.Append(tabela.NomeFormatado + " = new " + tabela.NomeFormatado + "(); \n");
                 foreach (Coluna coluna in tabela.Colunas)
                 {
                     Script.Append(coluna.GerarDataRead(Param, tabela) + " \n");
@@ -132,12 +131,12 @@ namespace DALEasy
                 Script.Append(" { \n");
                 Script.Append(" conexaoMSDE.Close(); \n");
                 Script.Append(" } \n");
-
+                Script.Append(" } \n");
 
             }
 
-            Script.Append(" } \n");
-            Script.Append(" \n");
+            Script.Append("} \n");
+            Script.Append("}\n");
             Script.Append(" \n");
 
 

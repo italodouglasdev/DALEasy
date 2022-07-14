@@ -148,7 +148,7 @@ namespace DALEasy
                 comboBoxLinguagem.Text = "C#";
                 Param.Linguagem.Nome = "C#";
 
-                labelNameSpace.Text = Param.Banco.Nome + "Db";
+                labelNameSpace.Text = comboBoxBanco.Text + "Db";
                 Param.Linguagem.NamespaceMetodos = Param.Banco.Nome + "Db";
 
 
@@ -275,6 +275,14 @@ namespace DALEasy
             var Param = Parametros.Carregar();            
 
             Classe.GerarClassesMsSQL(Param);
+        }
+
+        private void buttonLimpar_Click(object sender, EventArgs e)
+        {
+
+            //Finalizar implementação
+            //var Param = Parametros.Carregar();
+            //Param.Limpar();
         }
     }
 }

@@ -41,6 +41,25 @@ namespace DALEasy
 
         }
 
+        public bool Limpar()
+        {           
+
+            try
+            {
+                if (File.Exists(Application.StartupPath + @"\Parametros\Parametros.json"))
+                    File.Delete(Application.StartupPath + @"\Parametros\Parametros.json");                            
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+                return false;
+            }
+
+        }
+
         public static Parametros Carregar()
         {
             var Param = new Parametros();
@@ -69,8 +88,7 @@ namespace DALEasy
                 return Param;
             }
             catch (Exception ex)
-            {
-                //MessageBox.Show(ex.Message);
+            {              
                 return Param;
             }
 
