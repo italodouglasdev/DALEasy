@@ -44,7 +44,7 @@ namespace DALEasy
 
             var MetodoSelectAll = new Metodo();
             MetodoSelectAll.Nome = "SelectAll";
-            MetodoSelectAll.DML = "SELECALL";
+            MetodoSelectAll.DML = "SELECTALL";
             MetodoSelectAll.RetornaLista = true;
             MetodoSelectAll.ListaColunas = new List<string>();
             MetodoSelectAll.ListaColunasWHERE = new List<string>();
