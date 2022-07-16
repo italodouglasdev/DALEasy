@@ -20,20 +20,20 @@ namespace DALEasy
 
         public object Objeto { get; set; }
 
-        public void CarregarCadastro(object _Objeto)
+        public Object CarregarCadastro(object _Objeto)
         {
             Objeto = new object();
             Objeto = _Objeto;
 
             this.ShowDialog();
+
+            return Objeto;
+            
         }
 
 
         private void Form_Cadastro_Load(object sender, EventArgs e)
         {
-
-
-
             var PropIndex = 0;
             foreach (var property in Objeto.GetType().GetProperties())
             {
@@ -60,10 +60,6 @@ namespace DALEasy
                     Cadastro.AddCheckBox(PropNome, PropIndex, null, PropNome, Bolean);
                 }
 
-
-
-
-
             }
           
 
@@ -71,6 +67,10 @@ namespace DALEasy
 
         private void buttonSalvar_Click(object sender, EventArgs e)
         {
+            var Param = Parametros.Carregar();
+
+            this.Close();
+
 
         }
     }

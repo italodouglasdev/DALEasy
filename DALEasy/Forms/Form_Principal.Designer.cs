@@ -56,6 +56,7 @@ namespace DALEasy
             this.ColumnTabelaNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTabelaNomeFormatado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBoxClassesEMetodos = new System.Windows.Forms.GroupBox();
+            this.buttonLimpar = new System.Windows.Forms.Button();
             this.buttonGerarClasse = new System.Windows.Forms.Button();
             this.buttonGerarClasses = new System.Windows.Forms.Button();
             this.labelMetodos = new System.Windows.Forms.Label();
@@ -66,7 +67,6 @@ namespace DALEasy
             this.labelNameSpace = new System.Windows.Forms.Label();
             this.labelLinguagem = new System.Windows.Forms.Label();
             this.comboBoxLinguagem = new System.Windows.Forms.ComboBox();
-            this.buttonLimpar = new System.Windows.Forms.Button();
             this.groupBoxBancoDeDados.SuspendLayout();
             this.groupBoxTabelaseColunas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewColunas)).BeginInit();
@@ -237,6 +237,7 @@ namespace DALEasy
             // 
             this.dataGridViewColunas.AllowUserToAddRows = false;
             this.dataGridViewColunas.AllowUserToDeleteRows = false;
+            this.dataGridViewColunas.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewColunas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewColunas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnColunaNome,
@@ -301,6 +302,7 @@ namespace DALEasy
             // 
             this.dataGridViewTabelas.AllowUserToAddRows = false;
             this.dataGridViewTabelas.AllowUserToDeleteRows = false;
+            this.dataGridViewTabelas.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewTabelas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewTabelas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnTabelaNome,
@@ -345,6 +347,16 @@ namespace DALEasy
             this.groupBoxClassesEMetodos.TabStop = false;
             this.groupBoxClassesEMetodos.Text = "Classes e Métodos";
             // 
+            // buttonLimpar
+            // 
+            this.buttonLimpar.Location = new System.Drawing.Point(662, 25);
+            this.buttonLimpar.Name = "buttonLimpar";
+            this.buttonLimpar.Size = new System.Drawing.Size(98, 23);
+            this.buttonLimpar.TabIndex = 8;
+            this.buttonLimpar.Text = "Limpar";
+            this.buttonLimpar.UseVisualStyleBackColor = true;
+            this.buttonLimpar.Click += new System.EventHandler(this.buttonLimpar_Click);
+            // 
             // buttonGerarClasse
             // 
             this.buttonGerarClasse.Location = new System.Drawing.Point(662, 89);
@@ -378,6 +390,7 @@ namespace DALEasy
             // 
             this.dataGridViewMetodos.AllowUserToAddRows = false;
             this.dataGridViewMetodos.AllowUserToDeleteRows = false;
+            this.dataGridViewMetodos.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewMetodos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMetodos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnMetodoNome,
@@ -388,6 +401,7 @@ namespace DALEasy
             this.dataGridViewMetodos.RowHeadersVisible = false;
             this.dataGridViewMetodos.Size = new System.Drawing.Size(325, 116);
             this.dataGridViewMetodos.TabIndex = 4;
+            this.dataGridViewMetodos.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewMetodos_CellMouseDoubleClick);
             // 
             // ColumnMetodoNome
             // 
@@ -439,16 +453,6 @@ namespace DALEasy
             this.comboBoxLinguagem.Size = new System.Drawing.Size(121, 21);
             this.comboBoxLinguagem.TabIndex = 0;
             this.comboBoxLinguagem.MouseLeave += new System.EventHandler(this.comboBoxLinguagem_MouseLeave);
-            // 
-            // buttonLimpar
-            // 
-            this.buttonLimpar.Location = new System.Drawing.Point(662, 25);
-            this.buttonLimpar.Name = "buttonLimpar";
-            this.buttonLimpar.Size = new System.Drawing.Size(98, 23);
-            this.buttonLimpar.TabIndex = 8;
-            this.buttonLimpar.Text = "Limpar";
-            this.buttonLimpar.UseVisualStyleBackColor = true;
-            this.buttonLimpar.Click += new System.EventHandler(this.buttonLimpar_Click);
             // 
             // Form_Principal
             // 

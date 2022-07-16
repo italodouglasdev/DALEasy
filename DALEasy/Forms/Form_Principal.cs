@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace DALEasy
@@ -146,10 +147,10 @@ namespace DALEasy
                 }
 
                 comboBoxLinguagem.Text = "C#";
-                Param.Linguagem.Nome = "C#";
+                Param.Linguagem.Nome = comboBoxLinguagem.Text;
 
-                labelNameSpace.Text = comboBoxBanco.Text + "Db";
-                Param.Linguagem.NamespaceMetodos = Param.Banco.Nome + "Db";
+                textBoxNameSpace.Text = comboBoxBanco.Text + "Db";
+                Param.Linguagem.NamespaceMetodos = textBoxNameSpace.Text;
 
 
                 if (Param.Salvar())
@@ -272,7 +273,7 @@ namespace DALEasy
 
         private void buttonGerarClasses_Click(object sender, EventArgs e)
         {
-            var Param = Parametros.Carregar();            
+            var Param = Parametros.Carregar();
 
             Classe.GerarClassesMsSQL(Param);
         }
@@ -281,8 +282,54 @@ namespace DALEasy
         {
 
             //Finalizar implementação
-            //var Param = Parametros.Carregar();
-            //Param.Limpar();
+            var Param = Parametros.Carregar();
+            Param.Limpar();
+
+            this.Dispose();
+
+        }
+
+        private void dataGridViewMetodos_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var Param = Parametros.Carregar();
+
+            if (e.RowIndex >= 0)
+            {
+                var row = dataGridViewTabelas.Rows[e.RowIndex];
+                var NomeTabela = dataGridViewTabelas.SelectedCells[0].Value.ToString();
+                var NomeMetodo = dataGridViewMetodos.SelectedCells[0].Value.ToString();
+
+                var Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
+                var Metodo = Tabela.Metodos.Find(m => m.Nome == NomeMetodo);
+
+                //var FormCadastro = new Form_Cadastro();
+                //Metodo = (Metodo)FormCadastro.CarregarCadastro(Metodo);
+
+
+                foreach (var tbl in Param.Banco.Tabelas)
+                {
+                    if (tbl.Nome == NomeTabela)
+                    {
+                        foreach (var mtd in tbl.Metodos)
+                        {
+                            if (mtd.Nome == Metodo.Nome)
+                            {
+                                var FormCadastro = new Form_Cadastro();
+                                Metodo = (Metodo)FormCadastro.CarregarCadastro(Metodo);
+
+                                tbl.Metodos.Remove(mtd);  
+                                tbl.Metodos.Add(Metodo);
+                                break;
+                            }
+
+                           
+                        }
+                    }
+                }
+
+                Param.Salvar();
+
+            }
         }
     }
 }
