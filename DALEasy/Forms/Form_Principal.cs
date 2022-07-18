@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -59,7 +60,8 @@ namespace DALEasy
                 }
                 else if (comboBoxTipoBanco.Text == "PostgreSQL")
                 {
-                    MessageBox.Show("Finalizar");
+                    ListaBancos = Banco.PostgreSQLSelectAll(textBoxServidor.Text, textBoxUsuario.Text, textBoxSenha.Text);
+
                 };
 
 
@@ -128,13 +130,11 @@ namespace DALEasy
 
                 if (Param.Banco.Tipo == "MsSQL")
                 {
-
                     ListaTabelas = Tabela.MsSQLSelectAll(Param.Banco);
-
                 }
-                else if (Param.Banco.Tipo == "MsSQL")
+                else if (Param.Banco.Tipo == "PostgreSQL")
                 {
-
+                    ListaTabelas = Tabela.PostgreSQLSelectAll(Param.Banco);
                 }
 
                 Param.Banco.Tabelas = ListaTabelas;
@@ -268,14 +268,26 @@ namespace DALEasy
 
             var Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
 
-            Classe.GerarClasseMsSQL(Param, Tabela);
+            Classe.GerarClasse(Param, Tabela);
+
+            if (MessageBox.Show("Abrir diretório?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Process.Start("Explorer", Application.StartupPath + @"\Classes\");
+            }
+
+
         }
 
         private void buttonGerarClasses_Click(object sender, EventArgs e)
         {
             var Param = Parametros.Carregar();
 
-            Classe.GerarClassesMsSQL(Param);
+            Classe.GerarClasses(Param);
+
+            if (MessageBox.Show("Abrir diretório?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Process.Start("Explorer", Application.StartupPath + @"\Classes\");
+            }
         }
 
         private void buttonLimpar_Click(object sender, EventArgs e)
@@ -317,12 +329,12 @@ namespace DALEasy
                                 var FormCadastro = new Form_Cadastro();
                                 Metodo = (Metodo)FormCadastro.CarregarCadastro(Metodo);
 
-                                tbl.Metodos.Remove(mtd);  
+                                tbl.Metodos.Remove(mtd);
                                 tbl.Metodos.Add(Metodo);
                                 break;
                             }
 
-                           
+
                         }
                     }
                 }

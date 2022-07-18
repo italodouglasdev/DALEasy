@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -78,6 +79,63 @@ namespace DALEasy
             }
         }
 
+        public static List<Coluna> PostgreSQLSelectAll(Banco banco, Tabela Tabela)
+        {
+
+            var ListaColunas = new List<Coluna>();
+            var Coluna = new Coluna();
+
+            NpgsqlConnection conexaoMSDE = new NpgsqlConnection();
+            NpgsqlCommand comandoSQL = new NpgsqlCommand();
+            conexaoMSDE = new NpgsqlConnection("Server=" + banco.Servidor + ";Port=5432;Database=" + banco.Nome + ";User Id=" + banco.Usuario + ";Password=" + banco.Senha + ";");        
+            comandoSQL.Connection = conexaoMSDE;
+            comandoSQL.CommandText = "SELECT column_name as \"Nome\", data_type as \"Tipo\", CHARACTER_MAXIMUM_LENGTH as \"Tamanho\", is_nullable as \"PermiteNulo\" FROM information_schema.columns where table_name ='" + Tabela.Nome + "'";
+
+            try
+            {
+                conexaoMSDE.Open();
+                NpgsqlDataReader dr;
+                dr = comandoSQL.ExecuteReader();
+                while (dr.Read())
+                {
+
+                    Coluna = new Coluna()
+                    {
+                        Nome = !string.IsNullOrEmpty(dr["Nome"].ToString()) ? (string)dr["Nome"] : "",
+                        Tipo = !string.IsNullOrEmpty(dr["Tipo"].ToString()) ? (string)dr["Tipo"] : null,
+                        Tamanho = !string.IsNullOrEmpty(dr["Tamanho"].ToString()) ? (int)dr["Tamanho"] : 0,
+                    };
+
+                    Coluna.GerarNomeFormatado();
+                    Coluna.VeriricarPk(Tabela);
+
+                    if ((!string.IsNullOrEmpty(dr["PermiteNulo"].ToString()) ? (string)dr["PermiteNulo"] : "NO") == "YES")
+                    {
+                        Coluna.PermiteNulo = true;
+                    }
+                    else
+                    {
+                        Coluna.PermiteNulo = false;
+                    }
+
+
+                    ListaColunas.Add(Coluna);
+                }
+
+                return ListaColunas;
+
+            }
+            catch (Exception ex)
+            {
+                return ListaColunas;
+            }
+
+            finally
+            {
+                conexaoMSDE.Close();
+            }
+        }
+
 
         private void GerarNomeFormatado()
         {
@@ -114,9 +172,10 @@ namespace DALEasy
                         TipoLinguagem = "byte()";
                     break;
 
-                case "bit":
+                case "bit": case "boolean":
                     TipoLinguagem = "bool";
-                    if (this.Tipo == "VB.Net")
+
+                    if (Param.Linguagem.Nome == "VB.Net")
                         TipoLinguagem = "boolean";
                     break;
 
@@ -154,17 +213,18 @@ namespace DALEasy
 
                 case "image":
                     TipoLinguagem = "byte[]";
-                    if (this.Tipo == "VB.Net")
-                        TipoLinguagem = "byte()";
 
+                    if (Param.Linguagem.Nome == "VB.Net")
+                        TipoLinguagem = "byte()";
                     break;
-                case "int":
+
+                case "int": case "integer":
                     TipoLinguagem = "int";
 
-                    if (this.Tipo == "VB.Net")
+                    if (Param.Linguagem.Nome == "VB.Net")
                         TipoLinguagem = "integer";
-
                     break;
+
                 case "money":
                     TipoLinguagem = "decimal";
                     break;
@@ -177,7 +237,7 @@ namespace DALEasy
                 case "numeric":
                     TipoLinguagem = "decimal";
                     break;
-                case "nvarchar":
+                case "nvarchar": case "character varying":
                     TipoLinguagem = "string";
                     break;
                 case "real":
@@ -210,7 +270,7 @@ namespace DALEasy
                 case "varbinary":
                     TipoLinguagem = "byte[]";
 
-                    if (this.Tipo == "VB.Net")
+                    if (Param.Linguagem.Nome == "VB.Net")
                         TipoLinguagem = "byte()";
 
                     break;
@@ -244,7 +304,7 @@ namespace DALEasy
             PropriedadeString = "public " + this.GerarTipoLinguagem(Param) + " " + this.NomeFormatado + " { get; set; }";
 
             if (Param.Linguagem.Nome == "VB.Net")
-                PropriedadeString = "Public Property " + this.NomeFormatado + " As " + this.Tipo;
+                PropriedadeString = "Public Property " + this.NomeFormatado + " As " + this.GerarTipoLinguagem(Param);
 
 
             return PropriedadeString;
@@ -281,7 +341,7 @@ namespace DALEasy
                     DataRead = tabela.Nome + "." + this.NomeFormatado + " = If(Not String.IsNullOrEmpty(dr(\"" + this.Nome + "\").ToString()), CType(dr(\"" + this.Nome + "\"), " + this.GerarTipoLinguagem(Param) + "), new DateTime())";
 
             }
-            else if (this.Tipo.Contains("bool") || this.Tipo.Contains("bit"))
+            else if (this.Tipo.Contains("bool") || this.Tipo.Contains("bit") || this.Tipo.Contains("boolean"))
             {
                 DataRead = tabela.Nome + "." + this.NomeFormatado + " = !string.IsNullOrEmpty(dr[\"" + this.Nome + "\"].ToString())?(" + this.GerarTipoLinguagem(Param) + ")dr[\"" + this.Nome + "\"] : false;";
 
@@ -305,7 +365,7 @@ namespace DALEasy
                     DataRead = tabela.Nome + "." + this.NomeFormatado + " = If(Not String.IsNullOrEmpty(dr(\"" + this.Nome + "\").ToString()), CType(dr(\"" + this.Nome + "\"), " + this.GerarTipoLinguagem(Param) + "), New Byte() { })";
 
             }
-            else if (this.Tipo.Contains("char") && this.Tipo != "nvarchar")
+            else if (this.Tipo.Contains("char") && this.Tipo != "nvarchar" && this.Tipo != "character varying")
             {
                 DataRead = tabela.Nome + "." + this.NomeFormatado + " = !string.IsNullOrEmpty(dr[\"" + this.Nome + "\"].ToString())?(" + this.GerarTipoLinguagem(Param) + ")dr[\"" + this.Nome + "\"] : new char();";
                 if (Param.Linguagem.Nome == "VB.Net")

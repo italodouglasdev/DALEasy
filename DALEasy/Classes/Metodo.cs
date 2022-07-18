@@ -11,8 +11,6 @@ namespace DALEasy
 
         public string Nome { get; set; }
 
-        //DML - Linguagem de Manipulação de Dados
-        //INSERT / UPDATE / DELETE
         public string DML { get; set; }
 
         public List<string> ListaColunas { get; set; }
@@ -52,8 +50,8 @@ namespace DALEasy
             foreach (var Coluna in tabela.Colunas)
                 MetodoSelectAll.ListaColunas.Add(Coluna.Nome);
 
-            foreach (var Coluna in tabela.Colunas.FindAll(c => c.PK == true))
-                MetodoSelectAll.ListaColunasWHERE.Add(Coluna.Nome);
+            //foreach (var Coluna in tabela.Colunas.FindAll(c => c.PK == true))
+            //    MetodoSelectAll.ListaColunasWHERE.Add(Coluna.Nome);
 
             ListaMetodosPadroes.Add(MetodoSelectAll);
 

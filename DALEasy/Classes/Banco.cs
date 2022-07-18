@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Npgsql;
 
-namespace DALEasy   
+namespace DALEasy
 {
-  public  class Banco
+    public class Banco
     {
         public string Nome { get; set; }
 
@@ -61,11 +62,48 @@ namespace DALEasy
             }
         }
 
-        //public enum TipoBanco
-        //{
-        //    MsSQL,
-        //    PostgreSQL
-        //}
+        public static List<Banco> PostgreSQLSelectAll(string Servidor, string Usuario, string Senha)
+        {
+            var ListaBancos = new List<Banco>();
+            var BancoDados = new Banco();
+
+            NpgsqlConnection conexaoMSDE = new NpgsqlConnection();
+            NpgsqlCommand comandoSQL = new NpgsqlCommand();
+            conexaoMSDE = new NpgsqlConnection("Server=" + Servidor + ";Port=5432;User Id=" + Usuario + ";Password=" + Senha + ";");
+            comandoSQL.Connection = conexaoMSDE;
+            comandoSQL.CommandText = "SELECT datname as \"Nome\" FROM pg_database WHERE datistemplate = false;";
+
+            try
+            {
+                conexaoMSDE.Open();
+                NpgsqlDataReader dr;
+                dr = comandoSQL.ExecuteReader();
+                while (dr.Read())
+                {
+
+                    BancoDados = new Banco()
+                    {
+                        Nome = !string.IsNullOrEmpty(dr["Nome"].ToString()) ? (string)dr["Nome"] : ""
+                    };
+
+
+                    ListaBancos.Add(BancoDados);
+                }
+
+                return ListaBancos;
+
+            }
+            catch (Exception ex)
+            {
+                return ListaBancos;
+            }
+
+            finally
+            {
+                conexaoMSDE.Close();
+            }
+        }
+
 
     }
 
