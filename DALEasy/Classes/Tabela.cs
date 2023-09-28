@@ -22,6 +22,20 @@ namespace DALEasy
         public List<Metodo> Metodos { get; set; }
 
 
+        public Tabela()
+        {          
+        }
+
+        public Tabela(string NomeBanco)
+        {
+            this.Nome = "NovaTabela";
+            this.NomeFormatado = "NovaTabela";
+            this.NomeBanco = NomeBanco;
+            this.Colunas = new List<Coluna>();
+            this.PKs = new List<PK>();
+            this.Metodos = new List<Metodo>();
+        }
+
         public Tabela Clone()
         {
             return (Tabela)this.MemberwiseClone();
@@ -519,6 +533,25 @@ namespace DALEasy
             return Script.ToString();
 
         }
+
+
+        public bool AtualizarNaParametrizacao(Tabela TabelaNova) 
+        {
+            var Param = Parametros.Carregar();
+
+            var TabelaAntiga = Param.Banco.Tabelas.Find(x => x.Nome == this.Nome);
+
+            if (TabelaAntiga != null)
+                Param.Banco.Tabelas.Remove(TabelaAntiga);         
+
+            Param.Banco.Tabelas.Add(TabelaNova);
+
+            Param.Salvar();
+
+            return true;
+
+        }
+
 
     }
 }

@@ -43,6 +43,8 @@ namespace DALEasy
             this.labelServidor = new System.Windows.Forms.Label();
             this.textBoxServidor = new System.Windows.Forms.TextBox();
             this.groupBoxTabelaseColunas = new System.Windows.Forms.GroupBox();
+            this.buttonAdicionarColuna = new System.Windows.Forms.Button();
+            this.buttonAdicionarTabela = new System.Windows.Forms.Button();
             this.labelColunas = new System.Windows.Forms.Label();
             this.labelTabelas = new System.Windows.Forms.Label();
             this.dataGridViewColunas = new System.Windows.Forms.DataGridView();
@@ -204,16 +206,38 @@ namespace DALEasy
             // 
             // groupBoxTabelaseColunas
             // 
+            this.groupBoxTabelaseColunas.Controls.Add(this.buttonAdicionarColuna);
+            this.groupBoxTabelaseColunas.Controls.Add(this.buttonAdicionarTabela);
             this.groupBoxTabelaseColunas.Controls.Add(this.labelColunas);
             this.groupBoxTabelaseColunas.Controls.Add(this.labelTabelas);
             this.groupBoxTabelaseColunas.Controls.Add(this.dataGridViewColunas);
             this.groupBoxTabelaseColunas.Controls.Add(this.dataGridViewTabelas);
             this.groupBoxTabelaseColunas.Location = new System.Drawing.Point(12, 89);
             this.groupBoxTabelaseColunas.Name = "groupBoxTabelaseColunas";
-            this.groupBoxTabelaseColunas.Size = new System.Drawing.Size(776, 194);
+            this.groupBoxTabelaseColunas.Size = new System.Drawing.Size(776, 199);
             this.groupBoxTabelaseColunas.TabIndex = 1;
             this.groupBoxTabelaseColunas.TabStop = false;
             this.groupBoxTabelaseColunas.Text = "Tabelas e Colunas";
+            // 
+            // buttonAdicionarColuna
+            // 
+            this.buttonAdicionarColuna.Location = new System.Drawing.Point(736, 13);
+            this.buttonAdicionarColuna.Name = "buttonAdicionarColuna";
+            this.buttonAdicionarColuna.Size = new System.Drawing.Size(24, 23);
+            this.buttonAdicionarColuna.TabIndex = 5;
+            this.buttonAdicionarColuna.Text = "+";
+            this.buttonAdicionarColuna.UseVisualStyleBackColor = true;
+            this.buttonAdicionarColuna.Click += new System.EventHandler(this.buttonAdicionarColuna_Click);
+            // 
+            // buttonAdicionarTabela
+            // 
+            this.buttonAdicionarTabela.Location = new System.Drawing.Point(197, 14);
+            this.buttonAdicionarTabela.Name = "buttonAdicionarTabela";
+            this.buttonAdicionarTabela.Size = new System.Drawing.Size(24, 23);
+            this.buttonAdicionarTabela.TabIndex = 4;
+            this.buttonAdicionarTabela.Text = "+";
+            this.buttonAdicionarTabela.UseVisualStyleBackColor = true;
+            this.buttonAdicionarTabela.Click += new System.EventHandler(this.buttonAdicionarTabela_Click);
             // 
             // labelColunas
             // 
@@ -463,6 +487,7 @@ namespace DALEasy
             this.Controls.Add(this.groupBoxTabelaseColunas);
             this.Controls.Add(this.groupBoxBancoDeDados);
             this.Name = "Form_Principal";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DAL Easy";
             this.Load += new System.EventHandler(this.Form_Principal_Load);
             this.groupBoxBancoDeDados.ResumeLayout(false);
@@ -518,6 +543,8 @@ namespace DALEasy
         private System.Windows.Forms.Button buttonGerarClasse;
         private System.Windows.Forms.Button buttonGerarClasses;
         private System.Windows.Forms.Button buttonLimpar;
+        private System.Windows.Forms.Button buttonAdicionarTabela;
+        private System.Windows.Forms.Button buttonAdicionarColuna;
     }
 }
 

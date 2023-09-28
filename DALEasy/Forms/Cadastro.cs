@@ -411,6 +411,74 @@ public class Cadastro : Panel
 
 
 
+    public void CarregarDadosDoObjeto(object _Objeto) 
+    {
+        var PropIndex = 0;
+
+        foreach (var property in _Objeto.GetType().GetProperties())
+        {
+            PropIndex += 1;
+            var PropNome = property.Name;
+            var PropTipo = property.PropertyType.Name;
+            var PropValor = property.GetValue(_Objeto, null).ToString();
+
+            this.AlterarFonteLabel(false, false, Color.Black);
+
+            if (PropTipo.ToLower() == "string")
+            {
+                this.AddTextBox(PropNome, PropIndex, PropNome, false, PropValor);
+            }
+            else if (PropTipo.ToLower() == "int32")
+            {
+                this.AddNumericUpDown(PropNome, PropIndex, PropNome, "", 0, 0, 5000, Convert.ToDecimal(PropValor));
+            }
+            else if (PropTipo.ToLower() == "boolean")
+            {
+                var Bolean = bool.Parse(PropValor);
+
+                this.AddCheckBox(PropNome, PropIndex, null, PropNome, Bolean);
+            }
+
+        }
+
+    }
+
+    public void CarregarDadosParaObjeto(object _Objeto)
+    {
+        foreach (var ObjetoControle in this.Controls)
+        {
+
+            if (ObjetoControle.GetType() == typeof(TextBox))
+            {
+                var Controle = (TextBox)ObjetoControle;
+
+                var propertyInfo = _Objeto.GetType().GetProperty(Controle.Name);
+                propertyInfo.SetValue(_Objeto, Convert.ChangeType(Controle.Text, propertyInfo.PropertyType), null);
+
+            }
+            else if (ObjetoControle.GetType() == typeof(NumericUpDown))
+            {
+                var Controle = (NumericUpDown)ObjetoControle;
+
+                var propertyInfo = _Objeto.GetType().GetProperty(Controle.Name);
+                propertyInfo.SetValue(_Objeto, Convert.ChangeType(Controle.Text, propertyInfo.PropertyType), null);
+
+            }
+            else if (ObjetoControle.GetType() == typeof(CheckBox))
+            {
+                var Controle = (CheckBox)ObjetoControle;
+
+                var propertyInfo = _Objeto.GetType().GetProperty(Controle.Name);
+                propertyInfo.SetValue(_Objeto, Convert.ChangeType(Controle.Checked, propertyInfo.PropertyType), null);
+
+            }
+
+        }
+
+    }
+
+
+
     public class ResultadoDetalhamento
     {
         public string Nome { get; set; }
@@ -432,196 +500,8 @@ public class Cadastro : Panel
     }
 
 
-    //public List<ResultadoDetalhamento> ResultadoDetalhado()
-    //{
-    //    try
-    //    {
-    //        var Retorno = new List<ResultadoDetalhamento>();
-    //        ResultadoDetalhamento ResDet = new ResultadoDetalhamento();
+    
 
-    //        foreach (var Controle in this.Controls)
-    //        {
-    //            ResDet = new ResultadoDetalhamento();
-    //            ResDet.Nome = Controle.Name;
-    //            ResDet.Tipo = Controle.GetType().Name();
-    //            ResDet.Tamanho = Controle.Size;
-    //            ResDet.Localizacao = Controle.Location;
 
-    //            ResDet.Obrigatorio = ListaControlesObrigatorios.ContainsKey(ResDet.Nome);
 
-    //            if (Controle is TextBox)
-    //            {
-    //                var ctrl = (TextBox)Controle;
-    //                ResDet.Texto = ctrl.Text;
-    //                ResDet.TipoTextBox = ctrl;
-    //                Retorno.Add(ResDet);
-    //            }
-    //            else if (Controle is RichTextBox)
-    //            {
-    //                var ctrl = (RichTextBox)Controle;
-    //                ResDet.Texto = ctrl.Text;
-    //                ResDet.TipoRichTextBox = ctrl;
-    //                Retorno.Add(ResDet);
-    //            }
-    //            else if (Controle is Label)
-    //            {
-    //                var ctrl = (Label)Controle;
-    //                ResDet.Texto = ctrl.Text;
-    //                ResDet.TipoLabel = ctrl;
-    //                Retorno.Add(ResDet);
-    //            }
-    //            else if (Controle is NumericUpDown)
-    //            {
-    //                var ctrl = (NumericUpDown)Controle;
-    //                ResDet.Texto = ctrl.Text;
-    //                ResDet.TipoNumericUpDown = ctrl;
-    //                Retorno.Add(ResDet);
-    //            }
-    //            else if (Controle is DateTimePicker)
-    //            {
-    //                var ctrl = (DateTimePicker)Controle;
-
-    //                if (ctrl.Format == DateTimePickerFormat.Short)
-    //                    ResDet.Texto = ctrl.Value.ToString("dd/MM/yyyy");
-    //                else if (ctrl.Format == DateTimePickerFormat.Time)
-    //                    ResDet.Texto = ctrl.Value.ToString("HH:mm:ss");
-    //                else if (ctrl.Format == DateTimePickerFormat.Custom)
-    //                    ResDet.Texto = ctrl.Value.ToString(ctrl.CustomFormat);
-    //                else
-    //                    ResDet.Texto = ctrl.Value.ToString("dd/MM/yyyy HH:mm:ss");
-
-    //                ResDet.TipoDateTimePicker = ctrl;
-    //                Retorno.Add(ResDet);
-    //            }
-    //            else if (Controle is CheckBox)
-    //            {
-    //                var ctrl = (CheckBox)Controle;
-
-    //                if (ctrl.Checked == true)
-    //                    ResDet.Texto = "True";
-    //                else
-    //                    ResDet.Texto = "False";
-
-    //                ResDet.TipoCheckBox = ctrl;
-    //                Retorno.Add(ResDet);
-    //            }
-    //            else if (Controle is ComboBox)
-    //            {
-    //                var ctrl = (ComboBox)Controle;
-    //                ResDet.Texto = ctrl.GetItemText(ctrl.SelectedItem);
-    //                ResDet.TipoComboBox = ctrl;
-    //                Retorno.Add(ResDet);
-    //            }
-    //            else if (Controle is ListBox)
-    //            {
-    //                var ctrl = (ListBox)Controle;
-    //                ResDet.Texto = ctrl.GetItemText(ctrl.SelectedItem);
-    //                ResDet.TipoListBox = ctrl;
-    //                Retorno.Add(ResDet);
-    //            }
-    //            else if (Controle is Panel)
-    //            {
-    //                var ctrl = (Panel)Controle;
-
-    //                foreach (var rdb in ctrl.Controls)
-    //                {
-    //                    if (rdb is RadioButton)
-    //                    {
-    //                        var subctrl = (RadioButton)rdb;
-    //                        if (subctrl.Checked == true)
-    //                        {
-    //                            var name = ctrl.Name.Split("")(1) + "" + ctrl.Name.Split("")(2);
-    //                            ResDet.Nome = name;
-    //                            ResDet.Texto = subctrl.Text;
-    //                            ResDet.Tipo = subctrl.GetType.Name();
-    //                            ResDet.TipoRadioButton = subctrl;
-    //                            Retorno.Add(ResDet);
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-
-    //        return Retorno;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        MessageBox.Show(ex.Message);
-    //    }
-    //}
-
-    //public Dictionary<string, string> Resultado()
-    //{
-    //    var Retorno = new Dictionary<string, string>();
-
-    //    foreach (var Controle in this.Controls)
-    //    {
-    //        if (Controle is TextBox)
-    //        {
-    //            var ctrl = (TextBox)Controle;
-    //            Retorno.Add(ctrl.Name, ctrl.Text);
-    //        }
-    //        else if (Controle is RichTextBox)
-    //        {
-    //            var ctrl = (RichTextBox)Controle;
-    //            Retorno.Add(ctrl.Name, ctrl.Text);
-    //        }
-    //        else if (Controle is NumericUpDown)
-    //        {
-    //            var ctrl = (NumericUpDown)Controle;
-    //            Retorno.Add(ctrl.Name, ctrl.Value);
-    //        }
-    //        else if (Controle is DateTimePicker)
-    //        {
-    //            var ctrl = (DateTimePicker)Controle;
-
-    //            if (ctrl.Format == DateTimePickerFormat.Short)
-    //                Retorno.Add(ctrl.Name, ctrl.Value.ToString("dd/MM/yyyy"));
-    //            else if (ctrl.Format == DateTimePickerFormat.Time)
-    //                Retorno.Add(ctrl.Name, ctrl.Value.ToString("HH:mm:ss"));
-    //            else if (ctrl.Format == DateTimePickerFormat.Custom)
-    //                Retorno.Add(ctrl.Name, ctrl.Value.ToString(ctrl.CustomFormat));
-    //            else
-    //                Retorno.Add(ctrl.Name, ctrl.Value.ToString("dd/MM/yyyy HH:mm:ss"));
-    //        }
-    //        else if (Controle is CheckBox)
-    //        {
-    //            var ctrl = (CheckBox)Controle;
-
-    //            if (ctrl.Checked == true)
-    //                Retorno.Add(ctrl.Name, "True");
-    //            else
-    //                Retorno.Add(ctrl.Name, "False");
-    //        }
-    //        else if (Controle is ComboBox)
-    //        {
-    //            var ctrl = (ComboBox)Controle;
-    //            Retorno.Add(ctrl.Name, ctrl.GetItemText(ctrl.SelectedItem));
-    //        }
-    //        else if (Controle is ListBox)
-    //        {
-    //            var ctrl = (ListBox)Controle;
-    //            Retorno.Add(ctrl.Name, ctrl.GetItemText(ctrl.SelectedItem));
-    //        }
-    //        else if (Controle is Panel)
-    //        {
-    //            var ctrl = (Panel)Controle;
-
-    //            foreach (var rdb in ctrl.Controls)
-    //            {
-    //                if (rdb is RadioButton)
-    //                {
-    //                    var subctrl = (RadioButton)rdb;
-    //                    if (subctrl.Checked == true)
-    //                    {
-    //                        var name = ctrl.Name.Split("_")(1) + "_" + ctrl.Name.Split("_")(2);
-    //                        Retorno.Add(name, subctrl.Text);
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    return Retorno;
-    //}
 }

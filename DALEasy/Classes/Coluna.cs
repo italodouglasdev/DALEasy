@@ -15,7 +15,23 @@ namespace DALEasy
         public string NomeFormatado { get; set; }
         public bool PermiteNulo { get; set; }
         public bool PK { get; set; }
+        public bool AutoIncrementavel { get; set; }
         public string Tipo { get; set; }
+
+        public Coluna()
+        {
+
+        }
+
+        public Coluna(string _nomeBanco, string _NomeTabela)
+        {
+            this.Nome = "NovaColuna";
+            this.Tamanho = 0;
+            this.NomeFormatado = "NovaColuna";
+            this.PermiteNulo = false;
+            this.PK = false;
+            this.Tipo = "string";
+        }
 
         public Coluna Clone()
         {
@@ -87,7 +103,7 @@ namespace DALEasy
 
             NpgsqlConnection conexaoMSDE = new NpgsqlConnection();
             NpgsqlCommand comandoSQL = new NpgsqlCommand();
-            conexaoMSDE = new NpgsqlConnection("Server=" + banco.Servidor + ";Port=5432;Database=" + banco.Nome + ";User Id=" + banco.Usuario + ";Password=" + banco.Senha + ";");        
+            conexaoMSDE = new NpgsqlConnection("Server=" + banco.Servidor + ";Port=5432;Database=" + banco.Nome + ";User Id=" + banco.Usuario + ";Password=" + banco.Senha + ";");
             comandoSQL.Connection = conexaoMSDE;
             comandoSQL.CommandText = "SELECT column_name as \"Nome\", data_type as \"Tipo\", CHARACTER_MAXIMUM_LENGTH as \"Tamanho\", is_nullable as \"PermiteNulo\" FROM information_schema.columns where table_name ='" + Tabela.Nome + "'";
 
@@ -172,7 +188,8 @@ namespace DALEasy
                         TipoLinguagem = "byte()";
                     break;
 
-                case "bit": case "boolean":
+                case "bit":
+                case "boolean":
                     TipoLinguagem = "bool";
 
                     if (Param.Linguagem.Nome == "VB.Net")
@@ -218,7 +235,8 @@ namespace DALEasy
                         TipoLinguagem = "byte()";
                     break;
 
-                case "int": case "integer":
+                case "int":
+                case "integer":
                     TipoLinguagem = "int";
 
                     if (Param.Linguagem.Nome == "VB.Net")
@@ -237,7 +255,8 @@ namespace DALEasy
                 case "numeric":
                     TipoLinguagem = "decimal";
                     break;
-                case "nvarchar": case "character varying":
+                case "nvarchar":
+                case "character varying":
                     TipoLinguagem = "string";
                     break;
                 case "real":
@@ -322,7 +341,7 @@ namespace DALEasy
                 DataRead = tabela.Nome + "." + this.NomeFormatado + " = !string.IsNullOrEmpty(dr[\"" + this.Nome + "\"].ToString())?(" + this.GerarTipoLinguagem(Param) + ")dr[\"" + this.Nome + "\"] : 0;";
 
                 if (Param.Linguagem.Nome == "VB.Net")
-                   DataRead = tabela.Nome + "." + this.NomeFormatado + " = If(Not String.IsNullOrEmpty(dr(\"" + this.Nome + "\").ToString()), CType(dr(\"" + this.Nome + "\"), " + this.GerarTipoLinguagem(Param) + "), 0)";
+                    DataRead = tabela.Nome + "." + this.NomeFormatado + " = If(Not String.IsNullOrEmpty(dr(\"" + this.Nome + "\").ToString()), CType(dr(\"" + this.Nome + "\"), " + this.GerarTipoLinguagem(Param) + "), 0)";
 
             }
             else if (this.Tipo.Contains("short"))
@@ -385,6 +404,35 @@ namespace DALEasy
 
 
         }
+
+
+        public bool AtualizarNaParametrizacao(Coluna ColunaNova, string NomeTabela)
+        {
+            var Param = Parametros.Carregar();
+
+            var Tabela = Param.Banco.Tabelas.Find(x => x.Nome == NomeTabela);
+
+            if (Tabela != null)
+            {
+                Param.Banco.Tabelas.Remove(Tabela);       
+
+                var ColunaAntiga = Tabela.Colunas.Find(x => x.Nome == ColunaNova.Nome);
+
+                if (ColunaAntiga != null)
+                    Tabela.Colunas.Remove(ColunaAntiga);
+
+                Tabela.Colunas.Add(ColunaNova);
+
+                Param.Banco.Tabelas.Add(Tabela);
+
+                Param.Salvar();
+
+            }
+
+            return true;
+
+        }
+
 
     }
 }
