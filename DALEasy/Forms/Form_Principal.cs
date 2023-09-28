@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace DALEasy
 {
@@ -29,15 +30,9 @@ namespace DALEasy
             if (!string.IsNullOrEmpty(Param.Banco.Nome))
                 groupBoxBancoDeDados.Enabled = false;
 
-            foreach (var Tabela in Param.Banco.Tabelas)
-            {
-                dataGridViewTabelas.Rows.Add(Tabela.Nome, Tabela.NomeFormatado);
-            }
+            AtualizarDataGridViewTabelas(Param);
 
-
-
-
-        }
+        }      
 
         private void buttonConectar_Click(object sender, EventArgs e)
         {
@@ -185,28 +180,54 @@ namespace DALEasy
 
                     if (tabela != null)
                     {
-                        if (dataGridViewColunas.Rows.Count > 0)
-                            dataGridViewColunas.Rows.Clear();
+                        AtualizarDataGridViewColunas(tabela);
 
-                        foreach (Coluna coluna in tabela.Colunas)
-                        {
-                            dataGridViewColunas.Rows.Add(coluna.Nome, coluna.NomeFormatado, coluna.Tipo, coluna.Tamanho, coluna.PK, coluna.PermiteNulo);
-                        }
-
-
-                        if (dataGridViewMetodos.Rows.Count > 0)
-                            dataGridViewMetodos.Rows.Clear();
-
-                        foreach (Metodo metodo in tabela.Metodos)
-                        {
-                            dataGridViewMetodos.Rows.Add(metodo.Nome, metodo.DML);
-                        }
+                        AtualizarDataGridViewMetodos(tabela);
 
                     }
 
                 }
 
             }
+        }
+
+      
+        private void dataGridViewTabelas_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var Param = Parametros.Carregar();
+
+            if (e.RowIndex >= 0)
+            {
+                var row = dataGridViewTabelas.Rows[e.RowIndex];
+                var NomeTabela = dataGridViewTabelas.SelectedCells[0].Value.ToString();
+
+                var Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
+
+                var FormCadastro = new Form_Cadastro();
+                FormCadastro.CarregarCadastro(Tabela, Param.Banco.Nome, Tabela.Nome);
+
+                Param = Parametros.Carregar();
+                Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
+
+                AtualizarDataGridViewTabelas(Param);
+                AtualizarDataGridViewColunas(Tabela);
+            }
+        }
+
+        private void buttonAdicionarTabela_Click(object sender, EventArgs e)
+        {
+            var Param = Parametros.Carregar();
+            var Tabela = new Tabela(Param.Banco.Nome);
+
+            var FormCadastro = new Form_Cadastro();
+            FormCadastro.CarregarCadastro(Tabela, Param.Banco.Nome, Tabela.Nome);
+
+            Param = Parametros.Carregar();
+            Tabela = Param.Banco.Tabelas.Find(t => t.Nome == Tabela.Nome) ;
+
+            AtualizarDataGridViewTabelas(Param);
+            AtualizarDataGridViewColunas(Tabela);
+
         }
 
         private void dataGridViewColunas_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -220,28 +241,38 @@ namespace DALEasy
                 var NomeTabela = dataGridViewTabelas.SelectedCells[0].Value.ToString();
                 var NomeColuna = dataGridViewColunas.SelectedCells[0].Value.ToString();
 
-                var Coluna = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela).Colunas.Find(c => c.Nome == NomeColuna);
+                var Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
+                var Coluna = Tabela.Colunas.Find(c => c.Nome == NomeColuna);
 
                 var FormCadastro = new Form_Cadastro();
-                FormCadastro.CarregarCadastro(Coluna);
+                FormCadastro.CarregarCadastro(Coluna, Param.Banco.Nome, NomeTabela);
+
+                Param = Parametros.Carregar();
+                Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
+                AtualizarDataGridViewColunas(Tabela);
+
             }
         }
 
-        private void dataGridViewTabelas_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void buttonAdicionarColuna_Click(object sender, EventArgs e)
         {
             var Param = Parametros.Carregar();
 
-            if (e.RowIndex >= 0)
-            {
-                var row = dataGridViewTabelas.Rows[e.RowIndex];
-                var NomeTabela = dataGridViewTabelas.SelectedCells[0].Value.ToString();
+            var NomeTabela = dataGridViewTabelas.SelectedCells[0].Value.ToString();
 
-                var Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
+            var Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
+            var NovaColuna = new Coluna(Param.Banco.Nome, NomeTabela);
 
-                var FormCadastro = new Form_Cadastro();
-                FormCadastro.CarregarCadastro(Tabela);
-            }
+            var FormCadastro = new Form_Cadastro();
+            FormCadastro.CarregarCadastro(NovaColuna, Param.Banco.Nome, NomeTabela);
+
+            Param = Parametros.Carregar();
+            Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
+            AtualizarDataGridViewColunas(Tabela);
+
         }
+
+
 
 
         private void comboBoxLinguagem_MouseLeave(object sender, EventArgs e)
@@ -313,10 +344,7 @@ namespace DALEasy
 
                 var Tabela = Param.Banco.Tabelas.Find(t => t.Nome == NomeTabela);
                 var Metodo = Tabela.Metodos.Find(m => m.Nome == NomeMetodo);
-
-                //var FormCadastro = new Form_Cadastro();
-                //Metodo = (Metodo)FormCadastro.CarregarCadastro(Metodo);
-
+                     
 
                 foreach (var tbl in Param.Banco.Tabelas)
                 {
@@ -327,7 +355,7 @@ namespace DALEasy
                             if (mtd.Nome == Metodo.Nome)
                             {
                                 var FormCadastro = new Form_Cadastro();
-                                Metodo = (Metodo)FormCadastro.CarregarCadastro(Metodo);
+                                Metodo = (Metodo)FormCadastro.CarregarCadastro(Metodo, Param.Banco.Nome, NomeTabela);
 
                                 tbl.Metodos.Remove(mtd);
                                 tbl.Metodos.Add(Metodo);
@@ -343,5 +371,44 @@ namespace DALEasy
 
             }
         }
+
+
+        private void AtualizarDataGridViewTabelas(Parametros Param)
+        {
+            if (dataGridViewTabelas.Rows.Count > 0)
+                dataGridViewTabelas.Rows.Clear();
+
+            foreach (var Tabela in Param.Banco.Tabelas)
+            {
+                dataGridViewTabelas.Rows.Add(Tabela.Nome, Tabela.NomeFormatado);
+            }
+        }
+
+        private void AtualizarDataGridViewMetodos(Tabela tabela)
+        {
+            if (dataGridViewMetodos.Rows.Count > 0)
+                dataGridViewMetodos.Rows.Clear();
+
+            foreach (Metodo metodo in tabela.Metodos)
+            {
+                dataGridViewMetodos.Rows.Add(metodo.Nome, metodo.DML);
+            }
+        }
+
+        private void AtualizarDataGridViewColunas(Tabela tabela)
+        {
+            if (dataGridViewColunas.Rows.Count > 0)
+                dataGridViewColunas.Rows.Clear();
+
+            foreach (Coluna coluna in tabela.Colunas)
+            {
+                dataGridViewColunas.Rows.Add(coluna.Nome, coluna.NomeFormatado, coluna.Tipo, coluna.Tamanho, coluna.PK, coluna.PermiteNulo);
+            }
+        }
+
+
+
+
+
     }
 }
